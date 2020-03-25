@@ -1,9 +1,9 @@
 package com.codecool.thehistory;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class TheHistoryLinkedList implements TheHistory {
     /**
@@ -13,33 +13,62 @@ public class TheHistoryLinkedList implements TheHistory {
 
     @Override
     public void add(String text) {
-        //TODO: check the TheHistory interface for more information
+        String[] temp = text.trim().split("\\s+");
+        for (int i=0; i<temp.length; i++) {
+            wordsLinkedList.add(temp[i]);
+        }
     }
 
     @Override
     public void removeWord(String wordToBeRemoved) {
-        //TODO: check the TheHistory interface for more information
+        wordsLinkedList.removeAll(Collections.singleton(wordToBeRemoved));
     }
 
     @Override
     public int size() {
-        //TODO: check the TheHistory interface for more information
-        return 0;
+        return wordsLinkedList.size();
     }
 
     @Override
     public void clear() {
-        //TODO: check the TheHistory interface for more information
+        wordsLinkedList.clear();
     }
 
     @Override
     public void replaceOneWord(String from, String to) {
-        //TODO: check the TheHistory interface for more information
+        while (wordsLinkedList.contains(from)) {
+            int tempIndex = wordsLinkedList.indexOf(from);
+            wordsLinkedList.set(tempIndex, to);
+        }
     }
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        //TODO: check the TheHistory interface for more information
+        System.out.println("linked list");
+        if (wordsLinkedList.containsAll(Arrays.asList(fromWords))) {
+            String source = "";
+            String replacement = "";
+            String allWords = "";
+            for (String word : fromWords) {
+                source += word + " ";
+            }
+            source = source.trim();
+            for (String word : toWords) {
+                replacement += word + " ";
+            }
+            replacement = replacement.trim();
+            for (String word : wordsLinkedList) {
+                allWords += word + " ";
+            }
+            allWords = allWords.trim();
+            System.out.println(allWords);
+            System.out.println(source);
+            System.out.println(replacement);
+            allWords = allWords.replaceAll(source, replacement);
+            String[] temp = allWords.trim().split("\\s+");
+            wordsLinkedList.clear();
+            wordsLinkedList.addAll(Arrays.asList(temp));
+        }
     }
 
     @Override
