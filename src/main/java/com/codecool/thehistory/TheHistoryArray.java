@@ -73,7 +73,6 @@ public class TheHistoryArray implements TheHistory {
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        //TODO: check the TheHistory interface for more information
         boolean go = true;
         boolean[] isWord = new boolean[fromWords.length];
         for (int i=0; i<fromWords.length; i++) {

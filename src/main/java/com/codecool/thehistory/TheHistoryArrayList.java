@@ -3,7 +3,6 @@ package com.codecool.thehistory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 
 public class TheHistoryArrayList implements TheHistory {
     /**
@@ -13,33 +12,78 @@ public class TheHistoryArrayList implements TheHistory {
 
     @Override
     public void add(String text) {
-        //TODO: check the TheHistory interface for more information
+        String[] temp = text.trim().split("\\s+");
+        for (String word : temp) {
+            wordsArrayList.add(word);
+        }
     }
 
     @Override
     public void removeWord(String wordToBeRemoved) {
-        //TODO: check the TheHistory interface for more information
+        wordsArrayList.removeAll(Collections.singleton(wordToBeRemoved));
     }
 
     @Override
     public int size() {
-        //TODO: check the TheHistory interface for more information
-        return 0;
+        return wordsArrayList.size();
     }
 
     @Override
     public void clear() {
-        //TODO: check the TheHistory interface for more information
+        wordsArrayList.clear();
     }
 
     @Override
     public void replaceOneWord(String from, String to) {
-        //TODO: check the TheHistory interface for more information
+        Collections.replaceAll(wordsArrayList, from, to);
     }
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        //TODO: check the TheHistory interface for more information
+        boolean[] fromCheck = new boolean[fromWords.length];
+        boolean go = true;
+        for (int i=0; i<fromWords.length; i++) {
+            for (String word : wordsArrayList) {
+                System.out.println("from word: " + word);
+                if (fromWords[i].equals(word)) {
+                    fromCheck[i]=true;
+                    break;
+                }
+                fromCheck[i]=false;
+            }
+        }
+        for (boolean check : fromCheck) {
+            if (check==false) {
+                go = false;
+                break;
+            }
+        }
+        if (go==true) {
+            String source = "";
+            String replacement = "";
+            String allWords = "";
+            for (String word : fromWords) {
+                source+= word + " ";
+            }
+            source = source.trim();
+            for (String word : toWords) {
+                replacement+= word + " ";
+            }
+            replacement = replacement.trim();
+            for (String word : wordsArrayList) {
+                allWords+= word + " ";
+            }
+            allWords = allWords.trim();
+            System.out.println(allWords);
+            System.out.println(source);
+            System.out.println(replacement);
+            allWords = allWords.replaceAll(source, replacement);
+            String[] temp = allWords.trim().split("\\s+");
+            wordsArrayList.clear();
+            for (String word : temp) {
+                wordsArrayList.add(word);
+            }
+        }
     }
 
     @Override
