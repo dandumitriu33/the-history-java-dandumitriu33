@@ -1,6 +1,7 @@
 package com.codecool.thehistory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class TheHistoryArrayList implements TheHistory {
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
+        // checking if all words from fromWords are actually words inside wordsArray
         boolean[] fromCheck = new boolean[fromWords.length];
         boolean go = true;
         for (int i=0; i<fromWords.length; i++) {
@@ -57,28 +59,26 @@ public class TheHistoryArrayList implements TheHistory {
                 break;
             }
         }
+        // if all fromWords are valid words, replacement starts
+        List<String> fromList = Arrays.asList(fromWords);
+        List<String> toList = Arrays.asList(toWords);
+        List<String> result = new ArrayList<>();
         if (go==true) {
-            String source = "";
-            String replacement = "";
-            String allWords = "";
-            for (String word : fromWords) {
-                source+= word + " ";
+            for(int i=0; i<wordsArrayList.size(); i++) {
+                try {
+                    if (wordsArrayList.subList(i, i + fromList.size()).equals(fromList)) {
+                        result.addAll(toList);
+                        i += fromList.size()-1;
+                    }
+                    else {
+                        result.add(wordsArrayList.get(i));
+                    }
+                }
+                catch (IndexOutOfBoundsException e) {
+                    result.add(wordsArrayList.get(i));
+                }
             }
-            source = source.trim();
-            for (String word : toWords) {
-                replacement+= word + " ";
-            }
-            replacement = replacement.trim();
-            for (String word : wordsArrayList) {
-                allWords+= word + " ";
-            }
-            allWords = allWords.trim();
-            allWords = allWords.replaceAll(source, replacement);
-            String[] temp = allWords.trim().split("\\s+");
-            wordsArrayList.clear();
-            for (String word : temp) {
-                wordsArrayList.add(word);
-            }
+        wordsArrayList = new ArrayList<>(result);
         }
     }
 
