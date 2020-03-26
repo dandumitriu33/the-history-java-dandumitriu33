@@ -44,7 +44,6 @@ public class TheHistoryArrayList implements TheHistory {
         boolean go = true;
         for (int i=0; i<fromWords.length; i++) {
             for (String word : wordsArrayList) {
-                System.out.println("from word: " + word);
                 if (fromWords[i].equals(word)) {
                     fromCheck[i]=true;
                     break;
@@ -74,9 +73,6 @@ public class TheHistoryArrayList implements TheHistory {
                 allWords+= word + " ";
             }
             allWords = allWords.trim();
-            System.out.println(allWords);
-            System.out.println(source);
-            System.out.println(replacement);
             allWords = allWords.replaceAll(source, replacement);
             String[] temp = allWords.trim().split("\\s+");
             wordsArrayList.clear();

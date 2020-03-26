@@ -1,5 +1,9 @@
 package com.codecool.thehistory;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class TheHistoryArray implements TheHistory {
 
     /**
@@ -9,7 +13,6 @@ public class TheHistoryArray implements TheHistory {
 
     @Override
     public void add(String text) {
-        //TODO: check the TheHistory interface for more information
         String[] tempArray = text.trim().split("\\s+");
 
         String[] resultArray = new String[wordsArray.length+tempArray.length];
@@ -23,14 +26,11 @@ public class TheHistoryArray implements TheHistory {
         for (int i=0; i<resultArray.length; i++) {
             wordsArray[i]=resultArray[i];
         }
-        for (int i=0; i<wordsArray.length; i++) {
-            System.out.println(wordsArray[i]);
-        }
+
     }
 
     @Override
     public void removeWord(String wordToBeRemoved) {
-        //TODO: check the TheHistory interface for more information
         String[] tempArray = new String[wordsArray.length];
         int counter = 0;
         for (int i=0; i<wordsArray.length; i++) {
@@ -50,19 +50,16 @@ public class TheHistoryArray implements TheHistory {
 
     @Override
     public int size() {
-        //TODO: check the TheHistory interface for more information
         return wordsArray.length;
     }
 
     @Override
     public void clear() {
-        //TODO: check the TheHistory interface for more information
         wordsArray= new String[0];
     }
 
     @Override
     public void replaceOneWord(String from, String to) {
-        //TODO: check the TheHistory interface for more information
         String[] tempArray = new String[wordsArray.length];
         for (int i=0; i<wordsArray.length; i++) {
             if (wordsArray[i].equals(from)) {
@@ -73,10 +70,12 @@ public class TheHistoryArray implements TheHistory {
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
+        // checking if all words from fromWords are actually words inside wordsArray
         boolean go = true;
+        Set<String> tempSet = new HashSet<String>(Arrays.asList(wordsArray));
         boolean[] isWord = new boolean[fromWords.length];
         for (int i=0; i<fromWords.length; i++) {
-            for (String existingWord : wordsArray) {
+            for (String existingWord : tempSet) {
                 if (fromWords[i].equals(existingWord)) {
                     isWord[i]=true;
                     break;
@@ -87,27 +86,36 @@ public class TheHistoryArray implements TheHistory {
         for (int i=0; i<isWord.length; i++) {
             if (isWord[i]==false) go=false;
         }
+        // if all fromWords are valid words, replacement starts
         if (go==true) {
-            String fromSection = "";
-            String toSection = "";
-            String allWords = "";
-            for (int i = 0; i < wordsArray.length; i++) {
-                allWords += wordsArray[i] + " ";
+            int fromLength = fromWords.length;
+            int toLength = toWords.length;
+            int resultLength = wordsArray.length;
+            for (int i=0; i<(wordsArray.length-fromLength+1); i++) {
+                if (Arrays.equals(Arrays.copyOfRange(wordsArray, i, i + fromLength), fromWords)) {
+                    i+=fromLength-1;
+                    resultLength = resultLength-fromLength+toLength;
+                }
             }
-            allWords = allWords.trim();
-            System.out.println("aw: " + allWords + ".");
-            for (int i = 0; i < fromWords.length; i++) {
-                fromSection += fromWords[i] + " ";
+            String[] result = new String[resultLength];
+            int k=0;
+            for (int i=0; i<(wordsArray.length); i++) {
+                if (Arrays.equals(Arrays.copyOfRange(wordsArray, i, i + fromLength), fromWords)) {
+                    for (int j=0; j<toWords.length; j++) {
+                        result[k]=toWords[j];
+                        k++;
+                    }
+                    i+=fromLength-1;
+                }
+                else if (!Arrays.equals(Arrays.copyOfRange(wordsArray, i, i + fromLength), fromWords)){
+                    result[k] = wordsArray[i];
+                    k++;
+                }
             }
-            fromSection = fromSection.trim();
-            for (int i = 0; i < toWords.length; i++) {
-                toSection += toWords[i] + " ";
+            wordsArray= new String[resultLength];
+            for (int i=0; i<resultLength; i++) {
+                wordsArray[i]=result[i];
             }
-            toSection = toSection.trim();
-            System.out.println("pre rep: " + allWords);
-            allWords = allWords.replace(fromSection, toSection);
-            System.out.println("post rep: " + allWords);
-            wordsArray = allWords.split(" ");
         }
     }
 

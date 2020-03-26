@@ -44,7 +44,6 @@ public class TheHistoryLinkedList implements TheHistory {
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        System.out.println("linked list");
         if (wordsLinkedList.containsAll(Arrays.asList(fromWords))) {
             String source = "";
             String replacement = "";
@@ -61,9 +60,6 @@ public class TheHistoryLinkedList implements TheHistory {
                 allWords += word + " ";
             }
             allWords = allWords.trim();
-            System.out.println(allWords);
-            System.out.println(source);
-            System.out.println(replacement);
             allWords = allWords.replaceAll(source, replacement);
             String[] temp = allWords.trim().split("\\s+");
             wordsLinkedList.clear();
