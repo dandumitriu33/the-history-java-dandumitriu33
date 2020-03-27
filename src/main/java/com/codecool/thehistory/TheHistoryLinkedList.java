@@ -1,9 +1,7 @@
 package com.codecool.thehistory;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.LinkedList;
-import java.util.List;
 
 public class TheHistoryLinkedList implements TheHistory {
     /**
@@ -44,27 +42,108 @@ public class TheHistoryLinkedList implements TheHistory {
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
+        System.out.println(wordsLinkedList);
+        LinkedList<String> resultList = new LinkedList<String>();
+        String[] temp = new String[fromWords.length];
+        System.out.println("res list: "+resultList);
         if (wordsLinkedList.containsAll(Arrays.asList(fromWords))) {
-            String source = "";
-            String replacement = "";
-            String allWords = "";
-            for (String word : fromWords) {
-                source += word + " ";
+            System.out.println("ini from: "+Arrays.asList(fromWords));
+            System.out.println("ini to: "+Arrays.asList(toWords));
+            int i=0;
+            while (i<wordsLinkedList.size()) {
+                System.out.println("i: "+i+" < " + wordsLinkedList.size());
+            if (!wordsLinkedList.get(i).equals(fromWords[0])) {
+                System.out.println("i: "+i + " wordsLL[i]: " + wordsLinkedList.get(i));
+                resultList.add(wordsLinkedList.get(i));
+                i++;
             }
-            source = source.trim();
-            for (String word : toWords) {
-                replacement += word + " ";
+            else {
+                try {
+                ListIterator list_Iter = wordsLinkedList.listIterator(i);
+
+                    for (int j = 0; j < fromWords.length; j++) {
+                        temp[j] = (String) list_Iter.next();
+                    }
+                    System.out.println("temp: " + Arrays.toString(temp) + " fromWords: " + Arrays.toString(fromWords));
+                    if (Arrays.equals(temp, fromWords)) {
+                        System.out.println("eq\n");
+                        resultList.addAll(Arrays.asList(toWords));
+                        System.out.println("workd");
+                        i += fromWords.length;
+                        System.out.println("i strange?: " + i);
+                    } else {
+                        System.out.println("no eq\n");
+                        resultList.add(wordsLinkedList.get(i));
+                        i++;
+                    }
+                }
+                catch (NoSuchElementException e) {
+                    resultList.add(wordsLinkedList.get(i));
+                    i++;
+                }
             }
-            replacement = replacement.trim();
-            for (String word : wordsLinkedList) {
-                allWords += word + " ";
             }
-            allWords = allWords.trim();
-            allWords = allWords.replaceAll(source, replacement);
-            String[] temp = allWords.trim().split("\\s+");
+
             wordsLinkedList.clear();
-            wordsLinkedList.addAll(Arrays.asList(temp));
+            ListIterator list_Iter2 = resultList.listIterator(0);
+            while (list_Iter2.hasNext()) {
+                wordsLinkedList.add((String) list_Iter2.next());
+            }
         }
+
+
+//            System.out.println("ini from: "+Arrays.asList(fromWords));
+//            System.out.println("ini to: "+Arrays.asList(toWords));
+//            for (int i=0; i<wordsLinkedList.size(); i++) {
+//                try {
+//                    System.out.println("starting for i: "+i+ " sublist: "+ wordsLinkedList.subList(i, i + fromWords.length));
+//                    if (wordsLinkedList.subList(i, i + fromWords.length).equals(Arrays.asList(fromWords))) {
+//                        System.out.println("contains");
+//                        resultList.addAll(Arrays.asList(toWords));
+//                        i += fromWords.length - 1;
+//                        System.out.println("res list: " + resultList);
+//                    } else {
+//                        System.out.println("does not contain");
+//                        resultList.add(wordsLinkedList.get(i));
+//                        System.out.println("res list: " + resultList);
+//                    }
+//                }
+//                catch (IndexOutOfBoundsException e) {
+//                    resultList.add(wordsLinkedList.get(i));
+//                    System.out.println("catch res list: " + resultList);
+//                }
+//            }
+//
+//
+
+//            String source = "";
+//            String replacement = "";
+//            String allWords = "";
+//            for (String word : fromWords) {
+//                source += word + " ";
+//            }
+//            source = source.trim();
+//            for (String word : toWords) {
+//                replacement += word + " ";
+//            }
+//            replacement = replacement.trim();
+//            for (String word : wordsLinkedList) {
+//                allWords += word + " ";
+//            }
+//            allWords = allWords.trim();
+//            allWords = allWords.replaceAll(source, replacement);
+//            String[] temp = allWords.trim().split("\\s+");
+//            wordsLinkedList.clear();
+//            wordsLinkedList.addAll(Arrays.asList(temp));
+//            wordsLinkedList.clear();
+//            ListIterator list_iter = resultList.listIterator(0);
+//            while(list_iter.hasNext()) {
+//                wordsLinkedList.add((String) list_iter.next());
+//            }
+//        }
+
+
+//        System.out.println(wordsLinkedList);
     }
 
     @Override
